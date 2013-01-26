@@ -1,0 +1,17 @@
+hadoop jar $HADOOP_HOME/hadoop-examples-*.jar grep kjvbible/in kjvbible/hive '\w+'
+hadoop fs -rmr kjvbible/pig/_logs
+
+hive
+
+DROP TABLE kjvbible_hive;
+SHOW TABLES;
+CREATE TABLE kjvbible_hive (freq INT, word STRING) ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t' STORED AS TEXTFILE;
+SHOW TABLES;
+DESCRIBE kjvbible_hive;
+
+
+LOAD DATA INPATH "kjvbible/pig" INTO TABLE kjvbible_hive;
+SELECT * FROM kjvbible_hive LIMIT 10;
+SELECT count(*) FROM kjvbible_hive;
+SELECT * FROM kjvbible_hive WHERE freq > 100 SORT BY freq DESC LIMIT 10;
+EXPLAIN SELECT * FROM kjvbible_hive WHERE freq > 100 SORT BY freq DESC LIMIT 10;;
